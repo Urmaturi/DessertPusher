@@ -28,6 +28,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
 import com.example.android.dessertpusher.databinding.ActivityMainBinding
 import timber.log.Timber
+const val KEY_REVENUE = "key_revenue"
+const val KEY_DESSERTSOLD = "key_dessertsold"
+const val KEY_DESERT_TIMER = "key_desert_timer"
 
 class MainActivity : AppCompatActivity(), LifecycleObserver {
 
@@ -69,7 +72,12 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (savedInstanceState != null) {
+            revenue = savedInstanceState.getInt(KEY_REVENUE,0)
+            dessertsSold = savedInstanceState.getInt(KEY_DESSERTSOLD,0)
+            Timber.i("dannye vostanovleny")
 
+        }
         // Use Data Binding to get reference to the views
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -86,11 +94,26 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         desertTimer = DessertTimer(this.lifecycle) ;
 
 
+        Timber.i("greate called")
+
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_REVENUE,revenue)
+        outState.putInt(KEY_DESSERTSOLD,dessertsSold)
+        Timber.i("dannye sohranena")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onStart() {
         super.onStart()
-        desertTimer.startTimer()
+        //desertTimer.startTimer()
+
         Timber.i("onStart Called")
     }
 
@@ -107,7 +130,7 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
     override fun onStop() {
         super.onStop()
-        desertTimer.stopTimer()
+       // desertTimer.stopTimer()
         Timber.i("onStop")
     }
 
