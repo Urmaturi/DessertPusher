@@ -33,6 +33,8 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
     private var revenue = 0
     private var dessertsSold = 0
+    private lateinit var desertTimer: DessertTimer
+
 
     // Contains all the views
     private lateinit var binding: ActivityMainBinding
@@ -81,12 +83,14 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
         // Make sure the correct dessert is showing
         binding.dessertButton.setImageResource(currentDessert.imageId)
+        desertTimer = DessertTimer(this.lifecycle) ;
 
 
     }
 
     override fun onStart() {
         super.onStart()
+        desertTimer.startTimer()
         Timber.i("onStart Called")
     }
 
@@ -97,11 +101,13 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
     override fun onPause() {
         super.onPause()
+
         Timber.i("onPause")
     }
 
     override fun onStop() {
         super.onStop()
+        desertTimer.stopTimer()
         Timber.i("onStop")
     }
 
